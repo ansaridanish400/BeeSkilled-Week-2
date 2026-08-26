@@ -1,0 +1,108 @@
+{
+  "info": {
+    "name": "To-Do List API",
+    "description": "Postman collection for To-Do List REST API (MongoDB + Express)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" }
+  ],
+  "item": [
+    {
+      "name": "Health / Root",
+      "item": [
+        {
+          "name": "GET / - API Info",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/", "host": ["{{baseUrl}}"], "path": [""] } }
+        },
+        {
+          "name": "GET /health",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] } }
+        }
+      ]
+    },
+    {
+      "name": "Tasks CRUD",
+      "item": [
+        {
+          "name": "POST /api/tasks - Create Task",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Buy groceries\",\n  \"description\": \"Milk, eggs, bread\",\n  \"priority\": \"high\",\n  \"completed\": false\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/tasks", "host": ["{{baseUrl}}"], "path": ["api", "tasks"] }
+          }
+        },
+        {
+          "name": "GET /api/tasks - List All",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/tasks", "host": ["{{baseUrl}}"], "path": ["api", "tasks"] } }
+        },
+        {
+          "name": "GET /api/tasks?completed=false",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/tasks?completed=false", "host": ["{{baseUrl}}"], "path": ["api", "tasks"], "query": [{ "key": "completed", "value": "false" }] } }
+        },
+        {
+          "name": "GET /api/tasks?search=groceries",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/tasks?search=groceries", "host": ["{{baseUrl}}"], "path": ["api", "tasks"], "query": [{ "key": "search", "value": "groceries" }] } }
+        },
+        {
+          "name": "GET /api/tasks/:id - Get One",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/tasks/:id", "host": ["{{baseUrl}}"], "path": ["api", "tasks", ":id"] }, "variable": [{ "key": "id", "value": "REPLACE_WITH_TASK_ID" }] }
+        },
+        {
+          "name": "PUT /api/tasks/:id - Full Update",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"title\": \"Buy groceries - updated\",\n  \"description\": \"Milk, eggs, bread, butter\",\n  \"completed\": true,\n  \"priority\": \"medium\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/tasks/:id", "host": ["{{baseUrl}}"], "path": ["api", "tasks", ":id"] },
+            "variable": [{ "key": "id", "value": "REPLACE_WITH_TASK_ID" }]
+          }
+        },
+        {
+          "name": "PATCH /api/tasks/:id - Partial Update",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"completed\": true\n}" },
+            "url": { "raw": "{{baseUrl}}/api/tasks/:id", "host": ["{{baseUrl}}"], "path": ["api", "tasks", ":id"] },
+            "variable": [{ "key": "id", "value": "REPLACE_WITH_TASK_ID" }]
+          }
+        },
+        {
+          "name": "PATCH /api/tasks/:id/toggle - Toggle Completed",
+          "request": { "method": "PATCH", "url": { "raw": "{{baseUrl}}/api/tasks/:id/toggle", "host": ["{{baseUrl}}"], "path": ["api", "tasks", ":id", "toggle"] }, "variable": [{ "key": "id", "value": "REPLACE_WITH_TASK_ID" }] }
+        },
+        {
+          "name": "DELETE /api/tasks/:id - Delete Task",
+          "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/tasks/:id", "host": ["{{baseUrl}}"], "path": ["api", "tasks", ":id"] }, "variable": [{ "key": "id", "value": "REPLACE_WITH_TASK_ID" }] }
+        },
+        {
+          "name": "DELETE /api/tasks/completed/clear - Clear Completed",
+          "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/api/tasks/completed/clear", "host": ["{{baseUrl}}"], "path": ["api", "tasks", "completed", "clear"] } }
+        }
+      ]
+    },
+    {
+      "name": "Error Cases",
+      "item": [
+        {
+          "name": "POST /api/tasks - Missing title (400)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"description\": \"no title\" }" },
+            "url": { "raw": "{{baseUrl}}/api/tasks", "host": ["{{baseUrl}}"], "path": ["api", "tasks"] }
+          }
+        },
+        {
+          "name": "GET /api/tasks/invalid-id (400)",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/tasks/invalid-id", "host": ["{{baseUrl}}"], "path": ["api", "tasks", "invalid-id"] } }
+        }
+      ]
+    }
+  ]
+}
